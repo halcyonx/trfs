@@ -1,0 +1,39 @@
+{
+  "shaders": [
+    {
+      "id": "single_color",
+      "vertex": "single_color.vs",
+      "fragment": "single_color.fs"
+    },
+    {
+      "id": "standard",
+      "vertex": "standard.vs",
+      "fragment": "standard.fs"
+    },
+    {
+      "id": "quad",
+      "vertex": "breakout/quad.vs",
+      "fragment": "breakout/quad.fs"
+    },
+    {
+      "id": "particle",
+      "vertex": "breakout/particle.vs",
+      "fragment": "breakout/particle.fs"
+    },
+    {
+      "id": "postprocessing",
+      "vertex": "breakout/post_processing.vs",
+      "fragment": "breakout/post_processing.fs"
+    },
+    {
+      "id": "text_render",
+      "vertex": "breakout/text_render.vs",
+      "fragment": "breakout/text_render.fs"
+    },
+    {
+      "id": "textured",
+      "vertex": "textured.vs",
+      "fragment": "textured.fs"
+    }
+  ]
+}

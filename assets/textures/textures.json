@@ -1,0 +1,16 @@
+{
+  "textures": [
+    {
+      "id": "awesomeface",
+      "path": "awesomeface.png"
+    },
+    {
+      "id": "block",
+      "path": "block.png"
+    },
+    {
+      "id": "block_solid",
+      "path": "block_solid.png"
+    }
+  ]
+}

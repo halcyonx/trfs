@@ -1,0 +1,11 @@
+build/
+build-*/
+project/
+tmp/
+.idea/
+cmake-build-*/
+.gradle/
+.cxx/
+*.DS_Store
+*.iml
+local.properties

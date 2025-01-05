@@ -1,0 +1,11 @@
+assets
+assets/*
+assets-
+gplay/assets
+bin
+gen
+obj
+.idea/
+.gradle/
+out/
+**/build/
