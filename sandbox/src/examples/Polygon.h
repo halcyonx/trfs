@@ -1,11 +1,12 @@
 #pragma once
 
 #include <Core/Layer.h>
+#include <Render/Shader.h>
 
-class Triangle : public Core::Layer
+class Polygon : public Core::Layer
 {
 public:
-	Triangle();
+	Polygon();
 	void OnAttach() override;
 	void OnDetach() override;
 	void OnUpdate(float dt) override;
@@ -13,4 +14,6 @@ public:
 	void OnImGuiRender() override;
 
 private:
+	Render::Shader _shader;
+	Render::VertexArray _vao;
 };

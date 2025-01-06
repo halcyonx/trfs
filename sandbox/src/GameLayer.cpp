@@ -96,11 +96,10 @@ void GameLayer::DrawRightOverlay()
 
 	bool* p_open = nullptr;
 	if (ImGui::Begin("ButtonOverlay", p_open, window_flags)) {
-		if (ImGui::Button("Empty")) {
-			_setExampleLayerFunc("Empty");
-		}
-		if (ImGui::Button("Triangle")) {
-			_setExampleLayerFunc("Triangle");
+		for (const auto& example : _examples) {
+			if (ImGui::Button(example.c_str(), { 140, 0 })) {
+				_setExampleLayerFunc(example);
+			}
 		}
 		ImGui::End();
 	}
@@ -110,6 +109,9 @@ GameLayer::GameLayer(SetLayerFunc&& func)
 	: Layer("GameLayer")
 	, _setExampleLayerFunc(std::move(func))
 {
+	_examples = {
+		"Empty", "Polygon"
+	};
 }
 
 void GameLayer::OnAttach()
@@ -124,8 +126,6 @@ void GameLayer::OnAttach()
 
 	ImGui::GetIO().FontGlobalScale = 2.0f;
 #endif
-
-	_shader = Core::GetAssetManager().LoadShader("standard");
 }
 
 void GameLayer::OnDetach()
@@ -138,18 +138,11 @@ void GameLayer::OnUpdate(float dt)
 
 void GameLayer::OnRender()
 {
-	_shader.Bind();
-	Render::DrawQuad();
-	_shader.Unbind();
 }
 
 void GameLayer::OnImGuiRender()
 {
 	DrawOverlay();
 	DrawRightOverlay();
-
-	ImGui::Begin("Hello, world!");
-	ImGui::Text("This is some useful text.");
-	ImGui::End();
-	ImGui::ShowDemoWindow();
+	//	ImGui::ShowDemoWindow();
 }

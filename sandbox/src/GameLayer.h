@@ -21,6 +21,6 @@ private:
 	void DrawRightOverlay();
 
 private:
-	Render::Shader _shader;
 	SetLayerFunc _setExampleLayerFunc;
+	std::vector<std::string> _examples;
 };

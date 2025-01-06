@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 
 include(cmake/project_version.cmake)
 
-project(breakout VERSION ${BREAKOUT_VER}
+project(trfs VERSION ${BREAKOUT_VER}
         DESCRIPTION "Breakout game"
         LANGUAGES CXX)
 

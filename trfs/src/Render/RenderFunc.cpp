@@ -1,5 +1,7 @@
 #include "RenderFunc.h"
+#include "Types.h"
 #include "OpenGLConfig.h"
+#include <Core/Log.h>
 
 namespace
 {
@@ -55,12 +57,48 @@ static void InitQuad()
 	glBindVertexArray(0);
 }
 
+static GLenum PrimitiveTypeToDrawMode(Render::PrimitiveType primitiveType)
+{
+	switch (primitiveType)
+	{
+		case Render::PrimitiveType::Points:
+			return GL_POINTS;
+		case Render::PrimitiveType::Lines:
+			return GL_LINES;
+		case Render::PrimitiveType::LineStrip:
+			return GL_LINE_STRIP;
+		case Render::PrimitiveType::LineLoop:
+			return GL_LINE_LOOP;
+		case Render::PrimitiveType::Triangles:
+			return GL_TRIANGLES;
+		case Render::PrimitiveType::TriangleStrip:
+			return GL_TRIANGLE_STRIP;
+		case Render::PrimitiveType::TriangleFan:
+			return GL_TRIANGLE_FAN;
+		default:
+			LOG_ERROR("Unknown primitive type");
+			return GL_TRIANGLES;
+	}
+}
+
 void Render::DrawQuad()
 {
 	InitQuad();
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
+}
+
+static void DrawIndexedImpl(Render::PrimitiveType primitiveType, int count, int offset, uint16_t* indices)
+{
+	glDrawElements(PrimitiveTypeToDrawMode(primitiveType), count, GL_UNSIGNED_INT, indices + offset);
+	glBindVertexArray(0);
+}
+
+void Render::DrawIndexed(const VertexArray& vertexArray, Render::PrimitiveType primitiveType)
+{
+	vertexArray.Bind();
+	DrawIndexedImpl(primitiveType, vertexArray.GetIndexBuffer().Count(), 0, nullptr);
 }
 
 void Render::ClearColor(float r, float g, float b, float a)
