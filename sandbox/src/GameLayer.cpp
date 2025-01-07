@@ -1,5 +1,5 @@
 #include "GameLayer.h"
-
+#include "ExampleLayersFactory.h"
 #include <Core/Log.h>
 #include <Core/Subsystems.h>
 #include <Render/RenderFunc.h>
@@ -109,9 +109,8 @@ GameLayer::GameLayer(SetLayerFunc&& func)
 	: Layer("GameLayer")
 	, _setExampleLayerFunc(std::move(func))
 {
-	_examples = {
-		"Empty", "Polygon"
-	};
+	ExampleLayersFactory::RegisterLayers();
+	_examples = ExampleLayersFactory::GetLayerNames();
 }
 
 void GameLayer::OnAttach()
