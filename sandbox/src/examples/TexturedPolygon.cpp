@@ -1,6 +1,7 @@
 #include "TexturedPolygon.h"
 #include <Core/Subsystems.h>
 #include <Render/RenderFunc.h>
+#include <Core/Log.h>
 
 TexturedPolygon::TexturedPolygon()
 	: Core::Layer("TexturedPolygon")
@@ -10,6 +11,8 @@ TexturedPolygon::TexturedPolygon()
 void TexturedPolygon::OnAttach()
 {
 	_shader = Core::GetAssetManager().LoadShader("standard");
+	_texture0 = Core::GetAssetManager().LoadTexture("awesomeface");
+	//	_texture1.Load("textures/awesomeface.png");
 
 	Render::VertexBuffer vb({
 		// positions		  // colors		   // texture coords

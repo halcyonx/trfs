@@ -46,3 +46,14 @@ std::string Utils::GetFileContent(const std::string& path)
 	IO::FileReader reader(GetAssetPath(path));
 	return reader.ReadAll();
 }
+
+std::pair<unsigned char*, int> Utils::GetFileData(const std::string& path)
+{
+	IO::FileReader reader(GetAssetPath(path));
+	reader.Open();
+	const int fileSize = static_cast<int>(reader.GetFileSize());
+	auto* buffer = new unsigned char[fileSize];
+	reader.Read(buffer, 1, fileSize);
+	reader.Close();
+	return { buffer, fileSize };
+}
