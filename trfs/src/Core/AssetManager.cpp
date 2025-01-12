@@ -25,7 +25,7 @@ void CofigureShaderSource(std::string& shaderSource)
 	}
 }
 
-std::optional<Render::Shader> LoadShaderFromFile(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath)
+static std::optional<Render::Shader> LoadShaderFromFile(const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath)
 {
 	const std::string root = "shaders/";
 	LOG_DEBUG("Load shader from file {} {} {}", vertexPath, fragmentPath, geometryPath);
@@ -47,7 +47,7 @@ std::optional<Render::Shader> LoadShaderFromFile(const std::string& vertexPath, 
 	return {};
 }
 
-std::optional<Render::Texture> LoadTextureFromFile(const std::string& path)
+static std::optional<Render::Texture> LoadTextureFromFile(const std::string& path)
 {
 	const std::string root = "textures/";
 	LOG_DEBUG("Load texture from file {}", path);
@@ -55,22 +55,18 @@ std::optional<Render::Texture> LoadTextureFromFile(const std::string& path)
 	const GLuint wrapMode = GL_REPEAT;
 	const bool srgb = false;
 
-	const auto fileData = Utils::GetFileContent(root + path);
-	auto* b = fileData.data();
-	// cast const char* to const unsigned char*
-	auto* buffer = reinterpret_cast<const unsigned char*>(fileData.data());
-	const int fileSize = static_cast<int>(fileData.size());
-	//	const unsigned char* buffer;
-	//	auto* buffer = const_cast<unsigned char*>(fileData.data());
+	const auto fileBuffer = Utils::GetFileBuffer(root + path);
+	const auto* buffer = static_cast<unsigned char*>(fileBuffer.GetBuffer());
+	const auto bufferSize = static_cast<int>(fileBuffer.GeBuffertSize());
 
-	LOG_DEBUG("Texture file path: {}, size: {}", root + path, fileSize);
+	LOG_DEBUG("Texture file path: {}, size: {}", root + path, bufferSize);
 
 	uint32_t texture = 0;
 	int width, height, nrChannels;
-	//	const bool flip = true;
-	//	stbi_set_flip_vertically_on_load(flip);
+	const bool flip = true;
+	stbi_set_flip_vertically_on_load(flip);
 
-	if (unsigned char* data = stbi_load_from_memory(buffer, fileSize, &width, &height, &nrChannels, 0)) {
+	if (unsigned char* data = stbi_load_from_memory(buffer, bufferSize, &width, &height, &nrChannels, 0)) {
 		Render::Texture resultTexture;
 		resultTexture.Generate(width, height, nrChannels, srgb, data);
 		stbi_image_free(data);
@@ -83,7 +79,7 @@ std::optional<Render::Texture> LoadTextureFromFile(const std::string& path)
 		stbi_image_free(data);
 		LOG_ERROR("Texture loading failed {}", path);
 	}
-	//	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load(false);
 
 	return {};
 }

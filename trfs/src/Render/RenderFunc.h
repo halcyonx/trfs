@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Texture.h"
+
 namespace Render
 {
 	void ClearColor(float r, float g, float b, float a);

@@ -99,22 +99,22 @@ void Render::Shader::SetUniform(std::string_view uniformName, const Math::Mat4& 
 	glCheckError();
 }
 
-void Render::Shader::SetSampler(std::string_view samplerName, int sampler) const
+void Render::Shader::SetSampler(std::string_view samplerName, uint32_t sampler) const
 {
 	glUniform1i(glGetUniformLocation(_program, std::string(samplerName).c_str()), sampler);
 	glCheckError();
 }
 
-//	void Shader::BindTexture2D(GLuint channel, GLuint texture)
-//	{
-//		assert(channel < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-//		glActiveTexture(GL_TEXTURE0 + channel);
-//		glCheckError();
-//		glBindTexture(GL_TEXTURE_2D, texture);
-//		glCheckError();
-//		SetSampler(std::string("texture_") + std::to_string(channel), channel);
-//	}
-//
+void Render::Shader::BindTexture2D(uint32_t channel, Texture texture)
+{
+	assert(channel < GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+	glActiveTexture(GL_TEXTURE0 + channel);
+	glCheckError();
+	glBindTexture(GL_TEXTURE_2D, texture.GetHandle());
+	glCheckError();
+	SetSampler(std::string("texture_") + std::to_string(channel), channel);
+}
+
 //	void Shader::UnbindTexture2D()
 //	{
 //		glBindTexture(GL_TEXTURE_2D, 0);

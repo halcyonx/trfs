@@ -6,11 +6,12 @@ set(SOURCES
         "src/TestMain.cpp"
         "src/TestFileReader.cpp"
         "src/TestLayerStack.cpp"
-    )
+        "src/TestFileBuffer.cpp"
+)
 
 target_sources(${target_name} PRIVATE ${SOURCES})
 
-target_include_directories(${target_name} PRIVATE "src")
+target_include_directories(${target_name} PRIVATE " src")
 target_include_directories(${target_name} PRIVATE "../deps/SDL/include")
 target_include_directories(${target_name} PRIVATE "../deps/googletest/include")
 target_include_directories(${target_name} PRIVATE "../src")

@@ -28,7 +28,8 @@ Render::Texture::Handle Render::Texture::Generate(int width, int height, int nrC
 		dataFormat = GL_RGB;
 	}
 	else if (nrChannels == 4) {
-		internalFormat = !srgb ? GL_RGBA : GL_SRGB_ALPHA;
+		//		internalFormat = !srgb ? GL_RGBA : GL_SRGB_ALPHA;
+		internalFormat = GL_RGBA;
 		dataFormat = GL_RGBA;
 	}
 

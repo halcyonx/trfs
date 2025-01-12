@@ -10,9 +10,9 @@ TexturedPolygon::TexturedPolygon()
 
 void TexturedPolygon::OnAttach()
 {
-	_shader = Core::GetAssetManager().LoadShader("standard");
+	_shader = Core::GetAssetManager().LoadShader("textured");
 	_texture0 = Core::GetAssetManager().LoadTexture("awesomeface");
-	//	_texture1.Load("textures/awesomeface.png");
+	_texture1 = Core::GetAssetManager().LoadTexture("container");
 
 	Render::VertexBuffer vb({
 		// positions		  // colors		   // texture coords
@@ -51,6 +51,8 @@ void TexturedPolygon::OnRender()
 	Render::Clear();
 
 	_shader.Bind();
+	_shader.BindTexture2D(0, _texture0);
+	_shader.BindTexture2D(1, _texture1);
 	//	Render::DrawQuad();
 	Render::DrawIndexed(_vao);
 	_shader.Unbind();

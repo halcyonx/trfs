@@ -47,6 +47,11 @@ std::string Utils::GetFileContent(const std::string& path)
 	return reader.ReadAll();
 }
 
+IO::FileBuffer Utils::GetFileBuffer(const std::string& path)
+{
+	return IO::FileBuffer(GetAssetPath(path));
+}
+
 std::pair<unsigned char*, int> Utils::GetFileData(const std::string& path)
 {
 	IO::FileReader reader(GetAssetPath(path));

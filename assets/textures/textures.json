@@ -11,6 +11,10 @@
     {
       "id": "block_solid",
       "path": "block_solid.png"
+    },
+    {
+      "id": "container",
+      "path": "container.png"
     }
   ]
 }
