@@ -12,4 +12,5 @@ namespace Render
 
 	void DrawQuad();
 	void DrawIndexed(const VertexArray& vertexArray, Render::PrimitiveType primitiveType = Render::PrimitiveType::Triangles);
+	void DrawPrimitives(const VertexArray& vertexArray, Render::PrimitiveType primitiveType, int count);
 } // namespace Render
