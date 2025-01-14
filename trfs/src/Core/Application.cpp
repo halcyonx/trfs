@@ -35,6 +35,11 @@ namespace Core
 		return std::make_unique<Subsystems>();
 	}
 
+	std::pair<int, int> Application::GetWindowSize()
+	{
+		return { 1024, 768 };
+	}
+
 	Application::Application()
 	{
 		_appInstance = this;
@@ -60,7 +65,8 @@ namespace Core
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 		//Get device display mode
-		SDL_Rect screenRect = { 0, 0, 1024, 768 };
+		const auto [width, height] = GetWindowSize();
+		SDL_Rect screenRect = { 0, 0, width, height };
 #if PLATFORM_ANDROID
 		SDL_DisplayMode displayMode;
 		if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0) {
@@ -109,7 +115,16 @@ namespace Core
 
 		const auto imguiLayer = ImguiLayer(window, context);
 
+		float deltaTime = 0.0f;
+		auto prevTime = SDL_GetTicks();
+		auto& timeManager = SubsystemsHolder::Get().GetTimeManager();
+
 		while (running) {
+			auto currentTime = SDL_GetTicks();
+			deltaTime = static_cast<float>(currentTime - prevTime) / 1000.0f;
+			prevTime = currentTime;
+			timeManager.Update(deltaTime);
+
 			while (SDL_PollEvent(&event) != 0) {
 				imguiLayer.OnEvent(event);
 
@@ -139,7 +154,6 @@ namespace Core
 			}
 			imguiLayer.Render();
 
-			float deltaTime = 0.0f;
 			_gameDelegate->OnFrameBegin();
 			_gameDelegate->OnUpdate(deltaTime);
 			_gameDelegate->OnRender();

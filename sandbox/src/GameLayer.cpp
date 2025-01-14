@@ -1,6 +1,7 @@
 #include "GameLayer.h"
 #include "ExampleLayersFactory.h"
 #include <Core/Log.h>
+#include <Core/Application.h>
 #include <Core/Subsystems.h>
 #include <Render/RenderFunc.h>
 
@@ -37,7 +38,10 @@ void GameLayer::DrawOverlay()
 	if (ImGui::Begin("StatsOverlay", p_open, window_flags)) {
 		const int fps = (int)(io.Framerate);
 		const int drawCalls = 0; //Render::Renderer::GetDrawCalls();
-		ImGui::Text("FPS: %d", fps);
+		ImGui::Text("FPS1: %d", fps);
+		ImGui::Text("FPS2: %d", Core::GetTimeManager().GetFps());
+		ImGui::Text("Frame: %d", Core::GetTimeManager().GetFrameNumber());
+		ImGui::Text("Delta time: %.3f", Core::GetTimeManager().GetDt());
 		ImGui::Text("Draw calls: %d", drawCalls);
 		ImGui::Separator();
 		if (ImGui::IsMousePosValid()) {

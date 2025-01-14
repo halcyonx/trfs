@@ -11,3 +11,8 @@ Core::AssetManager& Core::GetAssetManager()
 {
 	return Core::SubsystemsHolder::Get().GetAssetManager();
 }
+
+Core::TimeManager& Core::GetTimeManager()
+{
+	return Core::SubsystemsHolder::Get().GetTimeManager();
+}

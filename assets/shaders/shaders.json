@@ -34,6 +34,11 @@
       "id": "textured",
       "vertex": "textured.vs",
       "fragment": "textured.fs"
+    },
+    {
+      "id": "textured_transform",
+      "vertex": "textured_transform.vs",
+      "fragment": "textured.fs"
     }
   ]
 }

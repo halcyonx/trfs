@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AssetManager.h"
+#include "TimeManager.h"
 
 namespace Core
 {
@@ -28,10 +29,13 @@ namespace Core
 		}
 
 		AssetManager& GetAssetManager() { return _assetManager; }
+		TimeManager& GetTimeManager() { return _timeManager; }
 
 	private:
 		AssetManager _assetManager;
+		TimeManager _timeManager;
 	};
 
 	AssetManager& GetAssetManager();
+	TimeManager& GetTimeManager();
 } // namespace Core

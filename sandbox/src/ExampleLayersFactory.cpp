@@ -2,6 +2,7 @@
 #include <examples/Empty.h>
 #include <examples/Polygon.h>
 #include <examples/TexturedPolygon.h>
+#include <examples/SimpleScene.h>
 #include <Core/Log.h>
 
 class FactoryImpl
@@ -17,13 +18,24 @@ public:
 
 	void RegisterClass(const std::string& name, CreatorFunc creator)
 	{
-		_registry[name] = creator;
+		auto it = std::find_if(_registry.begin(), _registry.end(), [name](const auto& p) {
+			return p.first == name;
+		});
+		if (it != _registry.end()) {
+			LOG_ERROR("Layer already registered: {}", name);
+			return;
+		}
+		
+		_registry.emplace_back(name, creator);
 	}
 
 	std::unique_ptr<Core::Layer> CreateInstance(std::string_view name) const
 	{
 		assert(!_registry.empty());
-		auto it = _registry.find(std::string { name });
+		auto it = std::find_if(_registry.begin(), _registry.end(), [name](const auto& p) {
+			return p.first == name;
+		});
+
 		if (it != _registry.end()) {
 			return it->second();
 		}
@@ -41,7 +53,8 @@ public:
 	}
 
 private:
-	std::map<std::string, CreatorFunc> _registry;
+	using Registry = std::vector<std::pair<std::string, CreatorFunc>>;
+	Registry _registry;
 };
 
 void ExampleLayersFactory::RegisterLayers()
@@ -50,6 +63,7 @@ void ExampleLayersFactory::RegisterLayers()
 	instance.RegisterClass("Empty", []() { return std::make_unique<Empty>(); });
 	instance.RegisterClass("Polygon", []() { return std::make_unique<Polygon>(); });
 	instance.RegisterClass("TexturedPolygon", []() { return std::make_unique<TexturedPolygon>(); });
+	instance.RegisterClass("SimpleScene", []() { return std::make_unique<SimpleScene>(); });
 }
 
 std::unique_ptr<Core::Layer> ExampleLayersFactory::CreateLayer(std::string_view layerName)

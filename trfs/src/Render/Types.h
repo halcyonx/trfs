@@ -12,6 +12,7 @@ namespace Render
 	using Velocity2D = glm::vec2;
 	using TexCoords = glm::vec2;
 	using Vec3 = glm::vec3;
+	using Mat4 = glm::mat4;
 
 	enum class PrimitiveType
 	{

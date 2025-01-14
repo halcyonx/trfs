@@ -53,7 +53,6 @@ void TexturedPolygon::OnRender()
 	_shader.Bind();
 	_shader.BindTexture2D(0, _texture0);
 	_shader.BindTexture2D(1, _texture1);
-	//	Render::DrawQuad();
 	Render::DrawIndexed(_vao);
 	_shader.Unbind();
 }

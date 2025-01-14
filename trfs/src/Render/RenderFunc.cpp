@@ -110,3 +110,13 @@ void Render::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
+
+void Render::EnableDepthTest()
+{
+	glEnable(GL_DEPTH_TEST);
+}
+
+void Render::DisableDepthTest()
+{
+	glDisable(GL_DEPTH_TEST);
+}
