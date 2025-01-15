@@ -36,7 +36,7 @@ void SimpleScene::OnRender()
 
 	_shader.Bind();
 	_shader.BindTexture2D(0, _texture0);
-	_shader.BindTexture2D(1, _texture1);
+	_shader.BindTexture2D(1, _textureWall);
 
 	const auto [windowWidth, windowHeight] = Core::Application::GetWindowSize();
 	const float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
@@ -44,9 +44,9 @@ void SimpleScene::OnRender()
 	// Draw quad
 	{
 		Math::Mat4 modelMatrix { 1.0f };
-		modelMatrix = Math::Transform::Translate(modelMatrix, Math::Vec3(0.5f, -0.5f, 0.0f));
-		modelMatrix = Math::Transform::Rotate(modelMatrix, Math::Radians(-55.0f), Math::Vec3(1.0f, 0.0f, 0.0f));
-		modelMatrix = Math::Transform::Scale(modelMatrix, { 2.5f, 2.5f, 1.0f });
+		modelMatrix = Math::Transform::Translate(modelMatrix, Math::Vec3(-0.15f, -0.5f, 0.0f));
+		modelMatrix = Math::Transform::Rotate(modelMatrix, Math::Radians(-70.0f), Math::Vec3(1.0f, 0.0f, 0.0f));
+		modelMatrix = Math::Transform::Scale(modelMatrix, { 4.0f, 4.0f, 1.0f });
 
 		Math::Mat4 viewMatrix { 1.0f };
 		viewMatrix = Math::Transform::Translate(viewMatrix, Math::Vec3(0.0f, 0.0f, -3.0f));
@@ -86,14 +86,14 @@ void SimpleScene::SetupScene()
 {
 	_shader = Core::GetAssetManager().LoadShader("textured_transform");
 	_texture0 = Core::GetAssetManager().LoadTexture("awesomeface");
-	_texture1 = Core::GetAssetManager().LoadTexture("container");
+	_textureWall = Core::GetAssetManager().LoadTexture("wall");
 
 	Render::VertexBuffer vb({
 		// positions		  // colors		   // texture coords
-		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 8.0f, 8.0f,   // top right
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 8.0f, 0.0f,  // bottom right
 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  // top left
+		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 8.0f,  // top left
 	});
 
 	Render::IndexBuffer eb({

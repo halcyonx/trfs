@@ -55,7 +55,7 @@ namespace Render
 		Calculate();
 	}
 
-	glm::mat4 Camera::GetViewMatrix() const
+	Mat4 Camera::GetViewMatrix() const
 	{
 		return glm::lookAt(_position, _position + _front, _up);
 	}

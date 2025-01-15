@@ -21,6 +21,7 @@ private:
 	Render::Shader _shader;
 	Render::Texture _texture0;
 	Render::Texture _texture1;
+	Render::Texture _textureWall;
 	Render::VertexArray _vao;
 	Render::VertexArray _vaoCube;
 	Render::Camera _camera;
