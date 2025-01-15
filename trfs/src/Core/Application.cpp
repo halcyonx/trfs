@@ -196,6 +196,11 @@ namespace Core
 		_oldLayers.push_back(layer);
 	}
 
+	Layer* Application::GetTopLayer() const
+	{
+		return _layerStack.GetLast();
+	}
+
 	void Application::PrepareLayers()
 	{
 		if (!_oldLayers.empty()) {

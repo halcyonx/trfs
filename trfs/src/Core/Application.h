@@ -23,6 +23,7 @@ namespace Core
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 		void PopLayer(Layer* layer);
+		Layer* GetTopLayer() const;
 		static std::pair<int, int> GetWindowSize();
 
 	private:

@@ -1,10 +1,9 @@
 #include "GameLayer.h"
 #include "ExampleLayersFactory.h"
-#include <Core/Log.h>
-#include <Core/Application.h>
-#include <Core/Subsystems.h>
-#include <Render/RenderFunc.h>
+#include "Core/Application.h"
 
+#include <Core/Log.h>
+#include <Core/Subsystems.h>
 #include <imgui.h>
 
 void GameLayer::DrawOverlay()
@@ -36,13 +35,15 @@ void GameLayer::DrawOverlay()
 
 	bool* p_open = nullptr;
 	if (ImGui::Begin("StatsOverlay", p_open, window_flags)) {
-		const int fps = (int)(io.Framerate);
 		const int drawCalls = 0; //Render::Renderer::GetDrawCalls();
-		ImGui::Text("FPS1: %d", fps);
-		ImGui::Text("FPS2: %d", Core::GetTimeManager().GetFps());
+		ImGui::Text("FPS: %d", Core::GetTimeManager().GetFps());
 		ImGui::Text("Frame: %d", Core::GetTimeManager().GetFrameNumber());
 		ImGui::Text("Delta time: %.3f", Core::GetTimeManager().GetDt());
 		ImGui::Text("Draw calls: %d", drawCalls);
+		// print current layer
+		const auto* topLayer = Core::Application::GetInstance().GetTopLayer()->GetName().c_str();
+		ImGui::Text("Current Layer: %s", topLayer);
+
 		ImGui::Separator();
 		if (ImGui::IsMousePosValid()) {
 			ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);

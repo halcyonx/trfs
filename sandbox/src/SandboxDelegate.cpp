@@ -7,8 +7,6 @@
 #include "ExampleLayersFactory.h"
 
 SandboxDelegate::SandboxDelegate(int argc, char** args)
-	: _gameLayer(std::make_unique<GameLayer>(std::bind(&SandboxDelegate::SetExampleLayer, this, std::placeholders::_1)))
-	, _exampleLayer(ExampleLayersFactory::CreateLayer("Empty"))
 {
 }
 
@@ -17,7 +15,10 @@ SandboxDelegate::~SandboxDelegate() = default;
 void SandboxDelegate::OnLaunch()
 {
 	LOG_DEBUG("Sandbox OnLaunch");
-	auto shader = Core::GetAssetManager().LoadShader("standard");
+	const std::string activeLayer = "SimpleScene";
+	_gameLayer = std::make_unique<GameLayer>([this](std::string_view layerName) { SetExampleLayer(layerName); });
+	_exampleLayer = ExampleLayersFactory::CreateLayer(activeLayer);
+
 	Core::Application::GetInstance().PushLayer(_gameLayer.get());
 	Core::Application::GetInstance().PushLayer(_exampleLayer.get());
 }
