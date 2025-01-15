@@ -1,9 +1,10 @@
 #include "SimpleScene.h"
+
+#include <Math/Transform.h>
 #include <Render/RenderFunc.h>
 #include <Render/RenderUtils.h>
 #include <Core/Subsystems.h>
 #include <Core/Application.h>
-#include <glm/gtc/matrix_transform.hpp>
 
 static float* GetCubeVertices();
 static size_t GetCubeVerticesSize();
@@ -42,34 +43,34 @@ void SimpleScene::OnRender()
 	const auto time = Core::GetTimeManager().GetAppTime();
 	// Draw quad
 	{
-		glm::mat4 modelMatrix { 1.0f };
-		modelMatrix = glm::translate(modelMatrix, glm::vec3(0.5f, -0.5f, 0.0f));
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		modelMatrix = glm::scale(modelMatrix, { 2.5f, 2.5f, 1.0f });
+		Math::Mat4 modelMatrix { 1.0f };
+		modelMatrix = Math::Transform::Translate(modelMatrix, Math::Vec3(0.5f, -0.5f, 0.0f));
+		modelMatrix = Math::Transform::Rotate(modelMatrix, Math::Radians(-55.0f), Math::Vec3(1.0f, 0.0f, 0.0f));
+		modelMatrix = Math::Transform::Scale(modelMatrix, { 2.5f, 2.5f, 1.0f });
 
-		glm::mat4 viewMatrix { 1.0f };
-		viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+		Math::Mat4 viewMatrix { 1.0f };
+		viewMatrix = Math::Transform::Translate(viewMatrix, Math::Vec3(0.0f, 0.0f, -3.0f));
 
-		glm::mat4 projectionMatrix { 1.0f };
-		projectionMatrix = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+		Math::Mat4 projectionMatrix { 1.0f };
+		projectionMatrix = Math::Perspective(Math::Radians(45.0f), aspectRatio, 0.1f, 100.0f);
 
-		glm::mat4 transform = projectionMatrix * viewMatrix * modelMatrix;
+		Math::Mat4 transform = projectionMatrix * viewMatrix * modelMatrix;
 		_shader.SetUniform("transform", transform);
 	}
 	Render::DrawIndexed(_vao);
 
 	//	Draw box
 	{
-		glm::mat4 modelMatrix { 1.0f };
-		modelMatrix = glm::rotate(modelMatrix, glm::radians<float>(time * 50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		modelMatrix = glm::scale(modelMatrix, { 0.5f, 0.5f, 0.5f });
+		Math::Mat4 modelMatrix { 1.0f };
+		modelMatrix = Math::Transform::Rotate(modelMatrix, Math::Radians(time * 50.0f), Math::Vec3(0.0f, 1.0f, 0.0f));
+		modelMatrix = Math::Transform::Scale(modelMatrix, { 0.5f, 0.5f, 0.5f });
 
-		glm::mat4 viewMatrix = _camera.GetViewMatrix();
+		Math::Mat4 viewMatrix = _camera.GetViewMatrix();
 
-		glm::mat4 projectionMatrix { 1.0f };
-		projectionMatrix = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+		Math::Mat4 projectionMatrix { 1.0f };
+		projectionMatrix = Math::Perspective(Math::Radians(45.0f), aspectRatio, 0.1f, 100.0f);
 
-		glm::mat4 transform = projectionMatrix * viewMatrix * modelMatrix;
+		Math::Mat4 transform = projectionMatrix * viewMatrix * modelMatrix;
 		_shader.SetUniform("transform", transform);
 	}
 
