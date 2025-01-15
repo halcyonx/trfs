@@ -62,6 +62,8 @@ void SimpleScene::OnRender()
 	//	Draw box
 	{
 		Math::Mat4 modelMatrix { 1.0f };
+		float ypos = std::sin(time) * 0.25f;
+		modelMatrix = Math::Transform::Translate(modelMatrix, Math::Vec3(0.0f, ypos, 0.0f));
 		modelMatrix = Math::Transform::Rotate(modelMatrix, Math::Radians(time * 50.0f), Math::Vec3(0.0f, 1.0f, 0.0f));
 		modelMatrix = Math::Transform::Scale(modelMatrix, { 0.5f, 0.5f, 0.5f });
 
