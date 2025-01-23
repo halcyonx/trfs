@@ -4,16 +4,15 @@
 #include <Render/Shader.h>
 #include <Render/Camera.h>
 
-class SimpleScene : public Core::Layer
+class Transform : public Core::Layer
 {
 public:
-	SimpleScene();
+	Transform();
 	void OnAttach() override;
 	void OnDetach() override;
 	void OnUpdate(float dt) override;
 	void OnRender() override;
 	void OnImGuiRender() override;
-	void OnEvent(Core::Event& event) override;
 
 private:
 	void SetupScene();
@@ -26,5 +25,4 @@ private:
 	Render::VertexArray _vao;
 	Render::VertexArray _vaoCube;
 	Render::Camera _camera;
-	bool _isCameraInputEnabled = true;
 };

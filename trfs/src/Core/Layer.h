@@ -2,6 +2,8 @@
 
 namespace Core
 {
+	class Event;
+
 	class Layer
 	{
 	public:
@@ -17,6 +19,7 @@ namespace Core
 		virtual void OnUpdate(float dt) {}
 		virtual void OnRender() {}
 		virtual void OnImGuiRender() {}
+		virtual void OnEvent(Event& event) {}
 
 		inline const std::string& GetName() const
 		{

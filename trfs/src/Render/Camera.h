@@ -24,7 +24,9 @@ namespace Render
 		void SetFov(float fov);
 		void SetMoveSpeed(float speed);
 
-		void OnUpdate(float ts);
+		void OnUpdate(float dt);
+		void OnMouseMovedEvent(int x, int y);
+		void OnMouseScrolledEvent(int offset);
 		void UpdateLastPos();
 
 	private:

@@ -4,6 +4,10 @@
 #include "GameDelegate.h"
 #include "Subsystems.h"
 #include "ImguiLayer.h"
+#include "Event/KeyEvent.h"
+#include "Event/MouseEvent.h"
+#include "Input.h"
+
 #include <Version.h>
 #include <SDL.h>
 
@@ -143,6 +147,8 @@ namespace Core
 						break;
 					}
 				}
+
+				ProcessEvent(event);
 			}
 
 			PrepareLayers();
@@ -226,6 +232,47 @@ namespace Core
 
 		for (auto layer : _layerStack) {
 			layer->OnRender();
+		}
+	}
+
+	void Application::ProcessEvent(const SDL_Event& sdlEvent)
+	{
+		const auto sendEvent = [&sdlEvent](Event& event) {
+			event.handled = false;
+			for (auto layer : _appInstance->_layerStack) {
+				layer->OnEvent(event);
+				if (event.handled) {
+					break;
+				}
+			}
+		};
+
+		switch (sdlEvent.type) {
+			case SDL_KEYDOWN: {
+				KeyPressedEvent keyEvent(Input::CastIntToKeycode(sdlEvent.key.keysym.sym));
+				sendEvent(keyEvent);
+				break;
+			}
+			case SDL_MOUSEBUTTONDOWN: {
+				MouseButtonPressedEvent mouseEvent(sdlEvent.button.button);
+				sendEvent(mouseEvent);
+				break;
+			}
+			case SDL_MOUSEMOTION: {
+				MouseMovedEvent mouseEvent(sdlEvent.motion.xrel, sdlEvent.motion.yrel);
+				sendEvent(mouseEvent);
+				break;
+			}
+			case SDL_FINGERDOWN:
+				// On mobile, handle touch as you would a mouse click, or do something more elaborate
+				break;
+			case SDL_FINGERMOTION:
+				// Possibly treat as mouse motion if that makes sense
+				break;
+			case SDL_MULTIGESTURE:
+				// React to pinch/zoom, rotate, etc.
+				break;
+			default:;
 		}
 	}
 } // namespace Core

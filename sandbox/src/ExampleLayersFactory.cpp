@@ -2,6 +2,7 @@
 #include <examples/Empty.h>
 #include <examples/Polygon.h>
 #include <examples/TexturedPolygon.h>
+#include <examples/Transform.h>
 #include <examples/SimpleScene.h>
 #include <Core/Log.h>
 
@@ -25,7 +26,7 @@ public:
 			LOG_ERROR("Layer already registered: {}", name);
 			return;
 		}
-		
+
 		_registry.emplace_back(name, creator);
 	}
 
@@ -63,6 +64,7 @@ void ExampleLayersFactory::RegisterLayers()
 	instance.RegisterClass("Empty", []() { return std::make_unique<Empty>(); });
 	instance.RegisterClass("Polygon", []() { return std::make_unique<Polygon>(); });
 	instance.RegisterClass("TexturedPolygon", []() { return std::make_unique<TexturedPolygon>(); });
+	instance.RegisterClass("Transform", []() { return std::make_unique<Transform>(); });
 	instance.RegisterClass("SimpleScene", []() { return std::make_unique<SimpleScene>(); });
 }
 

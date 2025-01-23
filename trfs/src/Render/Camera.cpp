@@ -1,5 +1,7 @@
 #include "Camera.h"
+#include <Core/Input.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <Core/Log.h>
 
 namespace Render
 {
@@ -60,16 +62,49 @@ namespace Render
 		return glm::lookAt(_position, _position + _front, _up);
 	}
 
-	//	void Camera::OnEvent(Core::Event& event)
-	//	{
-	//		EventDispatcher dispatcher(event);
-	//		dispatcher.Dispatch<MouseMovedEvent>(std::bind(&Camera::OnMouseMoved, this, std::placeholders::_1));
-	//		dispatcher.Dispatch<MouseScrolledEvent>(std::bind(&Camera::OnMouseScrolled, this, std::placeholders::_1));
-	//	}
-
-	void Camera::OnUpdate(float ts)
+	void Camera::OnUpdate(float dt)
 	{
-		//		ProcessInput(ts);
+		// process input
+		float cameraSpeed = _movementSpeed * dt;
+		if (Input::IsKeyPressed(Keycode::KEY_W)) {
+			_position += cameraSpeed * _front;
+		}
+
+		if (Input::IsKeyPressed(Keycode::KEY_S)) {
+			_position -= cameraSpeed * _front;
+		}
+
+		if (Input::IsKeyPressed(Keycode::KEY_A)) {
+			_position -= glm::normalize(glm::cross(_front, _up)) * cameraSpeed;
+		}
+
+		if (Input::IsKeyPressed(Keycode::KEY_D)) {
+			_position += glm::normalize(glm::cross(_front, _up)) * cameraSpeed;
+		}
+	}
+
+	void Camera::OnMouseMovedEvent(int x, int y)
+	{
+		const auto xoffset = static_cast<float>(x) * _sensitivity;
+		const auto yoffset = -1 * static_cast<float>(y) * _sensitivity;
+
+		_lastMouseX += xoffset;
+		_lastMouseY += yoffset;
+
+		_yaw += xoffset;
+		_pitch += yoffset;
+		_pitch = std::clamp(_pitch, -89.0f, 89.0f);
+		Calculate();
+	}
+
+	void Camera::OnMouseScrolledEvent(int offset)
+	{
+		if (_fov >= 1.0f && _fov <= 45.0f) {
+			_fov -= static_cast<float>(offset);
+		}
+
+		_fov = std::clamp(_fov, 1.0f, 45.0f);
+		Calculate();
 	}
 
 	void Camera::Calculate()
@@ -82,53 +117,6 @@ namespace Render
 		_right = glm::normalize(glm::cross(_front, _wup));
 		_up = glm::normalize(glm::cross(_right, _front));
 	}
-
-	//	bool Camera::OnMouseMoved(const MouseMovedEvent& event)
-	//	{
-	//		const float xpos = event.GetX();
-	//		const float ypos = event.GetY();
-	//		float xoffset = (xpos - _lastMouseX) * _sensitivity;
-	//		float yoffset = (_lastMouseY - ypos) * _sensitivity;
-	//		_lastMouseX = xpos;
-	//		_lastMouseY = ypos;
-	//
-	//		_yaw += xoffset;
-	//		_pitch += yoffset;
-	//		_pitch = std::clamp(_pitch, -89.0f, 89.0f);
-	//		Calculate();
-	//		return false;
-	//	}
-
-	//	bool Camera::OnMouseScrolled(const MouseScrolledEvent& event)
-	//	{
-	//		if (_fov >= 1.0f && _fov <= 45.0f) {
-	//			_fov -= event.GetYOffset();
-	//		}
-	//
-	//		_fov = std::clamp(_fov, 1.0f, 45.0f);
-	//		Calculate();
-	//		return false;
-	//	}
-
-	//	void Camera::ProcessInput(float dt)
-	//	{
-	//		float cameraSpeed = _movementSpeed * dt;
-	//		if (Input::IsKeyPressed(KEY_W)) {
-	//			_position += cameraSpeed * _front;
-	//		}
-	//
-	//		if (Input::IsKeyPressed(KEY_S)) {
-	//			_position -= cameraSpeed * _front;
-	//		}
-	//
-	//		if (Input::IsKeyPressed(KEY_A)) {
-	//			_position -= glm::normalize(glm::cross(_front, _up)) * cameraSpeed;
-	//		}
-	//
-	//		if (Input::IsKeyPressed(KEY_D)) {
-	//			_position += glm::normalize(glm::cross(_front, _up)) * cameraSpeed;
-	//		}
-	//	}
 
 	void Camera::UpdateLastPos()
 	{

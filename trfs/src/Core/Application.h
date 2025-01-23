@@ -2,6 +2,8 @@
 
 #include "LayerStack.h"
 
+union SDL_Event;
+
 namespace Core
 {
 	class GameDelegate;
@@ -29,6 +31,7 @@ namespace Core
 	private:
 		void PrepareLayers();
 		void ProcessLayers(float deltaTime);
+		void ProcessEvent(const SDL_Event& event);
 
 	private:
 		bool _running = true;
